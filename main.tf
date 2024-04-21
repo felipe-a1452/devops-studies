@@ -24,6 +24,17 @@ resource "aws_instance" "host02" {
   }
 }
 
+resource "aws_instance" "host03" {
+  ami                    = "ami-0ec3d9efceafb89e0"
+  instance_type          = "t2.micro"
+  key_name               = "ansible-key"
+  vpc_security_group_ids = [aws_security_group.secgroup.id]
+
+  provisioner "local-exec" {
+    command = "sleep 25; ssh-keyscan ${self.private_ip} >> ~/.ssh/known_hosts"
+  }
+}
+
 resource "aws_security_group" "secgroup" {
   ingress {
     from_port   = 22
@@ -62,4 +73,8 @@ output "host01_private_ip" {
 
 output "host02_private_ip" {
   value = aws_instance.host02.private_ip
+}
+
+output "host03_private_ip" {
+  value = aws_instance.host03.private_ip
 }

@@ -1,0 +1,21 @@
+- hosts: all
+  tasks:
+    - name: creating folder
+      file:
+        path: /home/{{ ansible_user }}/{{ item }}
+        state: directory
+      with_items: #loop
+        - folder01
+        - folder02
+        - folder03
+        
+    - name: creating files
+      file:
+        path: /home/{{ ansible_user }}/{{ item.dir }}/{{ item.file }}
+        state: touch
+      loop:
+        - { dir: "folder01", file: "file01" }
+        - { dir: "folder02", file: "file02" }
+        - { dir: "folder03", file: "file03" }
+        
+  #playbook for creating files inside folders

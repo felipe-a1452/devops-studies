@@ -1,0 +1,16 @@
+- name: installing apache
+  hosts: all
+  become: yes
+  tasks:
+    - name: setup apache - debian
+      apt:
+        update_cache: yes
+        name: apache2
+        state: present
+      when: ansible_distribution == 'Debian'
+    
+    - name: setup apache - rhel
+      yum:
+        name: httpd
+        state: present
+      when: ansible_distribution == 'RedHat'
